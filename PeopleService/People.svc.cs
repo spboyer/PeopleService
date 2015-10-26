@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PeopleService
 {
@@ -12,8 +13,7 @@ namespace PeopleService
             var creator = new PeopleConstants();
             for (int i = 0; i < value; i++)
             {
-                var person = creator.CreatePerson();
-                person.Id = i + 1;
+                var person = creator.CreatePerson(i);
                 people.Add(person);
 
             }
@@ -21,5 +21,20 @@ namespace PeopleService
             return people.ToArray();
         }
 
+        public PersonMajor[] GetCompletePeople(int value)
+        {
+            List<PersonMajor> people = new List<PersonMajor>();
+            var creator = new PeopleConstants();
+            for (int i = 0; i < value; i++)
+            {
+                var person = creator.CreateMajorPerson(i);
+                people.Add(person);
+
+            }
+
+            return people.ToArray();
+        }
+
+       
     }
 }

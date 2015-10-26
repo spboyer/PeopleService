@@ -24,6 +24,17 @@ namespace PeopleService
         public string ZipCode { get; set; }
     }
 
+    public class PersonMajor
+    {
+        public int Id { get; set; }
+        public Person ItemPersonData { get; set; }
+        public Person ItemPersonEmergencyContactData { get; set; }
+        public Address ItemPersonAddressData1 { get; set; }
+        public Address ItemPersonAddressData2 { get; set; }
+
+        public string ItemPhoneNumberData1 { get { return "111-222-3434"; } set { } }
+        public string ItemPhoneNumberData2 { get { return "111-222-3434"; } set { } }
+    }
 
     public class PeopleConstants
     {
@@ -35,26 +46,39 @@ namespace PeopleService
         public static string[] Cities = new string[] {"Funny", "Purpose", "Brave", "Unknown", "Jedi", "Hero" };
         public static string[] States = new string[] { "FL", "VA", "CA", "WA", "ME", "NY"};
         public static string[] ZipCodes = new string[] { "12345", "34568", "94759", "23444", "28474", "19373", "88774", "21344" };
-        public Person CreatePerson()
+        public Person CreatePerson(int i)
         {
+            i = i + 1;
             Random rnd = RandomProvider.GetThreadRandom();
             var fn = rnd.Next(0, FirstNames.Length);
             var ln = rnd.Next(0, LastNames.Length);
             var a = rnd.Next(0, Ages.Length);
             var m = rnd.Next(0, Middles.Length);
 
-            return new Person() { First = FirstNames[fn], Last = LastNames[ln], Age = Ages[a], Middle = Middles[m] };
+            return new Person() {Id= i, First = FirstNames[fn], Last = LastNames[ln], Age = Ages[a], Middle = Middles[m] };
         }
 
-        public Address CreateAddress()
+        public PersonMajor CreateMajorPerson(int i)
         {
+            var person = new PersonMajor();
+            person.ItemPersonAddressData1 = CreateAddress(i);
+            person.ItemPersonAddressData2 = CreateAddress(i);
+            person.ItemPersonData = CreatePerson(i);
+            person.ItemPersonEmergencyContactData = CreatePerson(i);
+
+            return person;
+        }
+
+        public Address CreateAddress(int i)
+        {
+            i = i + 1;
             Random rnd = RandomProvider.GetThreadRandom();
             var str = rnd.Next(0, Streets.Length);
             var cty = rnd.Next(0, Cities.Length);
             var state = rnd.Next(0, States.Length);
-            
 
-            return new Address() { City = Cities[cty], State = States[state], Street = Streets[str], ZipCode = ZipCodes[state] };
+
+            return new Address() { Id = i, City = Cities[cty], State = States[state], Street = Streets[str], ZipCode = ZipCodes[state] };
         }
     }
 

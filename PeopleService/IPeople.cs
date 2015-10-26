@@ -10,6 +10,9 @@ namespace PeopleService
         [OperationContract]
         Person[] GetPeopleData(int value);
 
+        [OperationContract]
+        PersonMajor[] GetCompletePeople(int value); 
+
     }
 
 }

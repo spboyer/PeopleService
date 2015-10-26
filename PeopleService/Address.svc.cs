@@ -18,8 +18,7 @@ namespace PeopleService
             var creator = new PeopleConstants();
             for (int i = 0; i < value; i++)
             {
-                var addy = creator.CreateAddress();
-                addy.Id = i + 1;
+                var addy = creator.CreateAddress(i);
                 addresses.Add(addy);
 
             }
