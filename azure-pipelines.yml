@@ -34,4 +34,4 @@ steps:
     repository: 'peoplewebapp-core'
     command: 'build'
     Dockerfile: '**/Dockerfile'
-    tags: 'shayne.azurecr.io/peoplewebapp-core:$(Build.BuildId)'
+    tags: $(Build.BuildId)
