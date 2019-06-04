@@ -27,3 +27,11 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'shayne-acr'
+    repository: 'peoplewebapp-core'
+    command: 'build'
+    Dockerfile: '**/Dockerfile'
+    tags: 'shayne.azurecr.io/peoplewebapp-core:$(Build.BuildId)'
