@@ -21,22 +21,33 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-#- task: VSBuild@1
-#  inputs:
-#    solution: '$(solution)'
-#    msbuildArgs: '/p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:PackageLocation="obj/Docker/publish"'
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-
 - task: MSBuild@1
   inputs:
     solution: '**/*.sln'
     msbuildArguments: '/t:ContainerBuild /p:Configuration=$(buildConfiguration)'
 
+- task: CmdLine@2
+  displayName: 'Tag docker image $(Build.BuildId)'
+  inputs:
+    script: 'docker tag peopleservice:latest shayne.azureacr.io/peopleservice:$(Build.BuildId)'
+
+- task: CmdLine@2
+  displayName: 'Tag docker image latest'
+  inputs:
+    script: 'docker tag peopleservice:latest shayne.azureacr.io/peopleservice:latest'
+
+
 - task: Docker@2
+  displayName: 'Push peopleservice image'
   inputs:
     containerRegistry: 'shayne-acr'
-    repository: 'peoplewebapp-core'
-    command: 'build'
-    Dockerfile: 'Dockerfile'
-    tags: shayne.azureacr.io/peoplewebapp-core:$(Build.BuildId)
+    command: 'push'
+    tags: shayne.azureacr.io/peopleservice:$(Build.BuildId)
+
+
+- task: Docker@2
+  displayName: 'Push peopleservice image'
+  inputs:
+    containerRegistry: 'shayne-acr'
+    command: 'push'
+    tags: shayne.azureacr.io/peopleservice:latest
