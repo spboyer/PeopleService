@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- docker
 
 pool:
   vmImage: 'windows-latest'
@@ -22,6 +22,7 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: MSBuild@1
+  displayName: 'Build Application and main Docker Image'
   inputs:
     solution: '**/*.sln'
     msbuildArguments: '/t:ContainerBuild /p:Configuration=$(buildConfiguration)'
@@ -37,23 +38,18 @@ steps:
     script: 'docker tag peopleservice:latest shayne.azureacr.io/peopleservice:latest'
 
 - task: Docker@2
+  displayName: 'ACR Login'
   inputs:
     containerRegistry: 'shayne-acr'
     command: 'login'
 
-- task: Docker@2
-  displayName: 'Push peopleservice image'
+- task: CmdLine@2
+  displayName: 'Push Docker Images:$(Build.BuildId)'
   inputs:
-    containerRegistry: 'shayne-acr'
-    repository: 'peopleservice'
-    command: 'push'
-    tags: shayne.azureacr.io/peopleservice:$(Build.BuildId)
+    script: 'docker push shayne.azureacr.io/peopleservice:$(Build.BuildId)'
 
-- task: Docker@2
-  displayName: 'Push peopleservice image'
+- task: CmdLine@2
+  displayName: 'Push Docker Images :latest'
   inputs:
-    containerRegistry: 'shayne-acr'
-    repository: 'peopleservice'
-    command: 'push'
-    tags: shayne.azureacr.io/peopleservice:latest
+    script: 'docker push shayne.azureacr.io/peopleservice:latest'
 
