@@ -31,7 +31,7 @@ steps:
 - task: MSBuild@1
   inputs:
     solution: '**/*.sln'
-    msbuildArguments: '/t:ContainerBuild /p:Configuration=$(buildConfiguration) PeopleService.csproj'
+    msbuildArguments: '/t:ContainerBuild /p:Configuration=$(buildConfiguration)'
 
 - task: Docker@2
   inputs:
