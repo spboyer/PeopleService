@@ -30,12 +30,12 @@ steps:
 - task: CmdLine@2
   displayName: 'Tag docker image $(Build.BuildId)'
   inputs:
-    script: 'docker tag peopleservice:latest shayne.azureacr.io/peopleservice:$(Build.BuildId)'
+    script: 'docker tag peopleservice:latest shayne.azurecr.io/peopleservice:$(Build.BuildId)'
 
 - task: CmdLine@2
   displayName: 'Tag docker image latest'
   inputs:
-    script: 'docker tag peopleservice:latest shayne.azureacr.io/peopleservice:latest'
+    script: 'docker tag peopleservice:latest shayne.azurecr.io/peopleservice:latest'
 
 - task: Docker@2
   displayName: 'ACR Login'
@@ -46,10 +46,10 @@ steps:
 - task: CmdLine@2
   displayName: 'Push Docker Images:$(Build.BuildId)'
   inputs:
-    script: 'docker push shayne.azureacr.io/peopleservice:$(Build.BuildId)'
+    script: 'docker push shayne.azurecr.io/peopleservice:$(Build.BuildId)'
 
 - task: CmdLine@2
   displayName: 'Push Docker Images :latest'
   inputs:
-    script: 'docker push shayne.azureacr.io/peopleservice:latest'
+    script: 'docker push shayne.azurecr.io/peopleservice:latest'
 
